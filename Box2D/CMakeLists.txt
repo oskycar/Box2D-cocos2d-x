@@ -26,6 +26,8 @@
 # this CMakeLists is to generate libBox2D.a
 cmake_minimum_required(VERSION 2.8)
 
+project(libBox2D)
+
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
 )
@@ -41,17 +43,11 @@ endif(LINUX32)
 add_library(box2d STATIC ${box2d_source_files})
 
 
-
-if(ANDROID)
-message(STATUS "android doesn't need ARCHIVE_OUTPUT_DIRECTORY")
-else()
 set_target_properties(box2d
     PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
 )
-endif()
-
 
 install(DIRECTORY Box2D/ DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/prebuilt/include"
           FILES_MATCHING PATTERN "*.h")

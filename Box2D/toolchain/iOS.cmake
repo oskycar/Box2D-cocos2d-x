@@ -27,8 +27,11 @@ set (IOS True)
 
 # Force the compilers to gcc for iOS
 include (CMakeForceCompiler)
-CMAKE_FORCE_C_COMPILER (gcc gcc)
-CMAKE_FORCE_CXX_COMPILER (g++ g++)
+# CMAKE_FORCE_C_COMPILER (gcc gcc)
+# CMAKE_FORCE_CXX_COMPILER (g++ g++)
+CMAKE_FORCE_C_COMPILER ("/usr/bin/gcc" gcc)
+CMAKE_FORCE_CXX_COMPILER ("/usr/bin/g++" g++)
+
 
 # Skip the platform compiler checks for cross compiling
 set (CMAKE_CXX_COMPILER_WORKS TRUE)
@@ -109,7 +112,12 @@ set (CMAKE_OSX_SYSROOT ${CMAKE_IOS_SDK_ROOT} CACHE PATH "Sysroot used for iOS su
 
 # set the architecture for iOS - using ARCHS_STANDARD_32_BIT sets armv6,armv7 and appears to be XCode's standard. 
 # The other value that works is ARCHS_UNIVERSAL_IPHONE_OS but that sets armv7 only
-set (CMAKE_OSX_ARCHITECTURES "$(ARCHS_STANDARD_32_BIT)" CACHE string  "Build architecture for iOS")
+#set (CMAKE_OSX_ARCHITECTURES "$(ARCHS_STANDARD_64_BIT)" CACHE string  "Build architecture for iOS")
+#指定要编译的平台和依赖sdk版本，注意sdk10以上不支持编译armv7的库了,所以我们指定sdk为8.0，
+#ARCHS_STANDARD会自动设定支持的编译平台，iphoneos下为armv7 arm64，iphonesimulator下为i386和x86_64,xcodebuild时可以指定编译哪些平台下的库
+set (CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "8.0" CACHE string "iOS Deployment Target")
+set (CMAKE_OSX_ARCHITECTURES "$(ARCHS_STANDARD)" CACHE string  "Build architecture for iOS")
+
 
 # Set the find root to the iOS developer roots and to user defined paths
 set (CMAKE_FIND_ROOT_PATH ${CMAKE_IOS_DEVELOPER_ROOT} ${CMAKE_IOS_SDK_ROOT} ${CMAKE_PREFIX_PATH} CACHE string  "iOS find search path root")
